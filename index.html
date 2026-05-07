@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova CIMANGOLA - Fábrica de Cimento | Promoção 2026</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --cinza-escuro: #2c3e50;
+            --cinza-medio: #7f8c8d;
+            --cinza-claro: #bdc3c7;
+            --azul-cimento: #34495e;
+            --laranja: #e67e22;
+            --verde: #27ae60;
+            --vermelho: #e74c3c;
+            --branco: #ffffff;
+            --fundo: #ecf0f1;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--fundo);
+            color: var(--cinza-escuro);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--azul-cimento) 0%, var(--cinza-escuro) 100%);
+            color: var(--branco);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .logo img {
+            height: 50px;
+            width: auto;
+            background: white;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        
+        nav a {
+            color: var(--branco);
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: 0.3s;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        nav a:hover, nav a.active {
+            background: var(--laranja);
+        }
+        
+        .auth-btns {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: var(--laranja);
+            color: var(--branco);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--branco);
+            border: 2px solid var(--branco);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .section {
+            display: none;
+            padding: 40px 0;
+            min-height: calc(100vh - 200px);
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(52,73,94,0.9), rgba(44,62,80,0.9)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%237f8c8d" width="1200" height="600"/><text x="50%" y="50%" font-size="200" fill="%2395a5a6" text-anchor="middle" dy=".3em">🧱</text></svg>');
+            background-size: cover;
+            color: var(--branco);
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .promo-badge {
+            display: inline-block;
+            background: var(--laranja);
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .card {
+            background: var(--branco);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .card-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        
+        .card h3 {
+            color: var(--azul-cimento);
+            margin-bottom: 15px;
+        }
+        
+        .price {
+            font-size: 36px;
+            color: var(--laranja);
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        .form-container {
+            background: var(--branco);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--azul-cimento);
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--cinza-claro);
+            border-radius: 5px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--laranja);
+            outline: none;
+        }
+        
+        .table-container {
+            background: var(--branco);
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background: var(--azul-cimento);
+            color: var(--branco);
+            padding: 15px;
+            text-align: left;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--cinza-claro);
+        }
+        
+        tr:hover {
+            background: var(--fundo);
+        }
+        
+        .badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .badge-pendente {
+            background: #f39c12;
+            color: white;
+        }
+        
+        .badge-aprovado {
+            background: var(--verde);
+            color: white;
+        }
+        
+        .badge-rejeitado {
+            background: var(--vermelho);
+            color: white;
+        }
+        
+        .badge-devolvido {
+            background: var(--cinza-medio);
+            color: white;
+        }
+        
+        footer {
+            background: var(--cinza-escuro);
+            color: var(--branco);
+            padding: 40px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h4 {
+            color: var(--laranja);
+            margin-bottom: 15px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--cinza-medio);
+            font-size: 14px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .content-box {
+            background: var(--branco);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .content-box h3 {
+            color: var(--azul-cimento);
+            margin: 20px 0 10px;
+        }
+        
+        .content-box p {
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+            nav ul {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span style="font-size: 45px;">🧱</span>
+                    <div>
+                        <div>Nova CIMANGOLA</div>
+                        <div style="font-size: 12px; font-weight: normal;">Fábrica De Cimento</div>
+                    </div>
+                </div>
+                <nav>
+                    <ul id="menuNav">
+                        <li><a class="nav-link active" data-section="inicio">Início</a></li>
+                        <li><a class="nav-link" data-section="sobre">Sobre</a></li>
+                        <li><a class="nav-link" data-section="servicos">Serviços</a></li>
+                        <li><a class="nav-link" data-section="taxas">Taxas</a></li>
+                        <li><a class="nav-link" data-section="legislacao">Legislação</a></li>
+                        <li><a class="nav-link" data-section="comunicacao">Comunicação</a></li>
+                        <li><a class="nav-link" data-section="auditoria">Auditoria</a></li>
+                        <li><a class="nav-link" data-section="imprensa">Imprensa</a></li>
+                        <li><a class="nav-link" data-section="documentos" id="linkDocumentos" style="display:none;">Meus Documentos</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-btns" id="authBtns">
+                    <button class="btn btn-secondary" onclick="mostrarSecao('criar-conta')">Criar Conta</button>
+                    <button class="btn btn-primary" onclick="mostrarSecao('login')">Login</button>
+                </div>
+                <div class="auth-btns hidden" id="userBtns">
+                    <span id="nomeUsuario" style="margin-right: 10px;"></span>
+                    <button class="btn btn-primary" onclick="mostrarSecao('painel')">Painel</button>
+                    <button class="btn btn-secondary" onclick="logout()">Sair</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="inicio" class="section active">
+        <div class="hero">
+            <div class="container">
+                <div class="promo-badge">🏷️ PROMOÇÃO 2026</div>
+                <h1>Cimento de Qualidade para Angola</h1>
+                <p>Direto da Fábrica Nova CIMANGOLA para sua obra</p>
+                <button class="btn btn-primary" style="font-size: 18px; padding: 15px 40px;" onclick="mostrarSecao('servicos')">Fazer Pedido Agora</button>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="cards">
+                <div class="card">
+                    <div class="card-icon">🧱</div>
+                    <h3>Sem Transporte</h3>
+                    <p>Levante na fábrica do Pólo Industrial de Viana</p>
+                    <div class="price">4.000 Kz</div>
+                    <p>por saco de 50kg</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🚚</div>
+                    <h3>Com Transporte</h3>
+                    <p>Entregamos na sua obra em Luanda</p>
+                    <div class="price">5.000 Kz</div>
+                    <p>por saco de 50kg</p>
+                </div>
+            </div>
+            
+            <div style="background: white; padding: 30px; border-radius: 10px; margin: 40px 0;">
+                <h2 style="text-align: center; color: var(--azul-cimento); margin-bottom: 20px;">Dados de Pagamento</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; text-align: center;">
+                    <div>
+                        <strong>Entidade</strong>
+                        <div style="font-size: 24px; color: var(--laranja); font-weight: bold;">00525</div>
+                    </div>
+                    <div>
+                        <strong>Referência</strong>
+                        <div style="font-size: 24px; color: var(--laranja); font-weight: bold;">942714052</div>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 20px; color: var(--cinza-medio);">
+                    Pagamento via ATM ou Multicaixa Express na opção pagamentos por referência
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre" class="section">
+        <div class="container">
+            <h1 style="text-align: center; margin-bottom: 30px; color: var(--azul-cimento);">Sobre a Nova CIMANGOLA</h1>
+            <div class="form-container" style="max-width: 800px;">
+                <p>A <strong>Fábrica De Cimento - Nova CIMANGOLA</strong> é referência em qualidade e confiança no mercado angolano.</p>
+                <br>
+                <p><strong>🏢 Sede do Escritório:</strong> Rua 4 de fevereiro, Cacuaco, Luanda</p>
+                <p><strong>🏭 Sede da Fábrica:</strong> Pólo Industrial de Viana, Luanda</p>
+                <p><strong>📞 Call Center | WhatsApp:</strong> 975 425 542</p>
+                <p><strong>📧 E-mail:</strong> cimangola.ao@gmail.com</p>
+                <p><strong>📋 NIF:</strong> 5417103250</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="servicos" class="section">
+        <div class="container">
+            <h1 style="text-align: center; margin-bottom: 30px; color: var(--azul-cimento);">Fazer Pedido</h1>
+            <div class="form-container">
+                <div id="avisoLogin" class="alert alert-error">
+                    Precisa fazer login para realizar pedidos. <a href="#" onclick="mostrarSecao('login')">Clique aqui</a>
+                </div>
+                
+                <form id="formPedido" class="hidden">
+                    <div class="form-group">
+                        <label>Tipo de Compra *</label>
+                        <select id="tipoCompra" required>
+                            <option value="">Selecione</option>
+                            <option value="singular">Compra Singular</option>
+                            <option value="empresarial">Compra Empresarial</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Quantidade de Sacos *</label>
+                        <input type="number" id="quantidade" min="1" required placeholder="Ex: 100">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Modalidade *</label>
+                        <select id="modalidade" required onchange="calcularTotal()">
+                            <option value="">Selecione</option>
+                            <option value="4000">Sem Transporte - 4.000 Kz/saco</option>
+                            <option value="5000">Com Transporte - 5.000 Kz/saco</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Total a Pagar</label>
+                        <input type="text" id="totalPagar" readonly style="font-size: 24px; font-weight: bold; color: var(--laranja);">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Comprovativo de Pagamento *</label>
+                        <input type="file" id="comprovativo" accept="image/*,.pdf" required>
+                        <small>Envie o comprovativo do pagamento por referência</small>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px;">Enviar Pedido</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section id="criar-conta" class="section">
+        <div class="container">
+            <h1 style="text-align: center; margin-bottom: 30px; color: var(--azul-cimento);">Criar Conta</h1>
+            <div class="form-container">
+                <form id="formCadastro">
+                    <div class="form-group">
+                        <label>Tipo de Conta *</label>
+                        <select id="tipoConta" required>
+                            <option value="">Selecione</option>
+                            <option value="singular">Cliente Singular</option>
+                            <option value="empresarial">Cliente Empresarial</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Nome Completo / Razão Social *</label>
+                        <input type="text" id="nomeCompleto" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>NIF / BI *</label>
+                        <input type="text" id="nif" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>E-mail *</label>
+                        <input type="email" id="emailCadastro" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Telefone *</label>
+                        <input type="tel" id="telefone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Senha *</label>
+                        <input type="password" id="senhaCadastro" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px;">Criar Conta</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section id="login" class="section">
+        <div class="container">
+            <h1 style="text-align: center; margin-bottom: 30px; color: var(--azul-cimento);">Login</h1>
+            <div class="form-container">
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <button class="btn btn-primary" id="btnCliente" style="flex: 1;" onclick="setTipoLogin('cliente')">Cliente</button>
+                    <button class="btn btn-secondary" id="btnAdmin" style="flex: 1; color: var(--azul-cimento); border-color: var(--azul-cimento);" onclick="setTipoLogin('admin')">Admin</button>
+                </div>
+                
+                <form id="formLogin">
+                    <div class="form-group">
+                        <label>E-mail ou Usuário *</label>
+                        <input type="text" id="emailLogin" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Senha *</label>
+                        <input type="password" id="senhaLogin" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px;">Entrar</button>
+                </form>
+                
+                <p style="text-align: center; margin-top: 20px; font-size: 14px; color: var(--cinza-medio);">
+                    Admin: admin / cimangola2026
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="painel" class="section">
+        <div class="container">
+            <h1 style="text-align: center; margin-bottom: 30px; color: var(--azul-cimento);">Meu Painel</h1>
+            
+            <div id="painelCliente">
+                <h2>Meus Pedidos</h2>
+                <div class="table-container">
+                    <table id="tabelaPedidos">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Data</th>
+                                <th>Tipo</th>
+                                <th>Qtd</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpoTabelaPedidos"></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div id="painelAdmin" class="hidden">
+                <h2>Painel Administrativo - Diretor Comercial</h2>
+                <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                    <strong>Total de Pedidos:</strong> <span id="totalPedidosAdmin">0</span> | 
+                    <strong>Pendentes:</strong> <span id="totalPendentes">0</span>
+                </div>
+                <div class="table-container">
+                    <table id="tabelaAdmin">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Data</th>
+                                <th>Tipo</th>
+                                <th>Qtd</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpoTabelaAdmin"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="documentos" class="section">
+        <div class="container">
+            <h1 style="text-align: center; margin-bottom: 30px; color: var(--azul-cimento);">Meus Documentos</h1>
+            <div class="form-container" style="max-width: 900px;">
+                <p style="text-align: center; margin-bottom: 30px;">Baixe novamente seus documentos a qualquer momento</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Pedido</th>
+                                <th>Data</th>
+                                <th>Status</th>
+                                <th>Documentos</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpoTabelaDocumentos"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="taxas" class="section">
+        <div class="container">
+            <h1 style="text-align: center; color: var(--azul-cimento);">Taxas e Preços</h1>
+            <div class="cards">
+                <div class="card">
+                    <h3>Sem Transporte</h3>
+                    <div class="price">4.000 Kz</div>
+                    <p>Levantamento na fábrica</p>
+                </div>
+                <div class="card">
+                    <h3>Com Transporte</h3>
+                    <div class="price">5.000 Kz</div>
+                    <p>Entrega em Luanda</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="legislacao" class="section">
+        <div class="container">
+            <h1 style="text-align: center; color: var(--azul-cimento);">Legislação</h1>
+            <div class="content-box">
+                <h3>📋 Conformidade Legal</h3>
+                <p>A Nova CIMANGOLA opera em total conformidade com a legislação angolana:</p>
+                <br>
+                <p><strong>• Decreto Presidencial n.º 288/10</strong> - Regulamento de Licenciamento Industrial</p>
+                <p><strong>• Lei n.º 5/18</strong> - Lei do Investimento Privado</p>
+                <p><strong>• Normas INAPEM</strong> - Qualidade de materiais de construção</p>
+                <p><strong>• NIF:</strong> 5417103250 - Registrado na AGT</p>
+                <br>
+                <p>Todos os nossos produtos cumprem as especificações técnicas nacionais e internacionais NP EN 197-1.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="comunicacao" class="section">
+        <div class="container">
+            <h1 style="text-align: center; color: var(--azul-cimento);">Comunicação</h1>
+            <div class="content-box">
+                <h3>📞 Canais Oficiais</h3>
+                <p><strong>Call Center | WhatsApp:</strong> 975 425 542</p>
+                <p><strong>E-mail:</strong> cimangola.ao@gmail.com</p>
+                <p><strong>Horário:</strong> Segunda a Sexta, 8h às 17h | Sábado, 8h às 12h</p>
+                <br>
+                <h3>📍 Localização</h3>
+                <p><strong>Escritório:</strong> Rua 4 de fevereiro, Cacuaco, Luanda</p>
+                <p><strong>Fábrica:</strong> Pólo Industrial de Viana, Luanda</p>
+                <br>
+                <p>Para pedidos urgentes, use o WhatsApp. Tempo médio de resposta: 15 minutos.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="auditoria" class="section">
+        <div class="container">
+            <h1 style="text-align: center; color: var(--azul-cimento);">Auditoria e Qualidade</h1>
+            <div class="content-box">
+                <h3>🔍 Controle de Qualidade</h3>
+                <p>A Nova CIMANGOLA possui laboratório próprio certificado para garantir:</p>
+                <br>
+                <p>✓ Resistência conforme norma NP EN 197-1</p>
+                <p>✓ Finura e tempo de pega controlados</p>
+                <p>✓ Auditorias trimestrais independentes</p>
+                <p>✓ Rastreabilidade total de lotes</p>
+                <br>
+                <p><strong>Certificações:</strong> ISO 9001 em processo de implementação</p>
+                <p>Cada saco possui código de lote para verificação de autenticidade.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="imprensa" class="section">
+        <div class="container">
+            <h1 style="text-align: center; color: var(--azul-cimento);">Imprensa</h1>
+            <div class="content-box">
+                <h3>📰 Últimas Notícias</h3>
+                <div style="border-left: 4px solid var(--laranja); padding-left: 15px; margin: 20px 0;">
+                    <strong>Maio 2026</strong>
+                    <p>Nova CIMANGOLA lança Promoção 2026 com preços especiais: 4.000 Kz sem transporte e 5.000 Kz com entrega.</p>
+                </div>
+                <div style="border-left: 4px solid var(--laranja); padding-left: 15px; margin: 20px 0;">
+                    <strong>Abril 2026</strong>
+                    <p>Expansão da capacidade produtiva no Pólo Industrial de Viana. Meta: 500 mil toneladas/ano.</p>
+                </div>
+                <br>
+                <p><strong>Contato Imprensa:</strong> cimangola.ao@gmail.com</p>
+                <p>Para releases e material fotográfico, entre em contato.</p>
+            </div>
+        </div>
+    </section>
+
+    <div id="modalAgendamento" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center;">
+        <div class="form-container" style="max-width: 500px;">
+            <h2>Agendar Levantamento/Entrega</h2>
+            <form id="formAgendamento">
+                <input type="hidden" id="pedidoIdAgendamento">
+                <div class="form-group">
+                    <label>Data *</label>
+                    <input type="date" id="dataAgendamento" required>
+                </div>
+                <div class="form-group">
+                    <label>Hora *</label>
+                    <input type="time" id="horaAgendamento" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Confirmar Agendamento</button>
+                <button type="button" class="btn btn-secondary" style="width: 100%; margin-top: 10px; color: var(--azul-cimento); border-color: var(--azul-cimento);" onclick="fecharModal()">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Nova CIMANGOLA</h4>
+                    <p>Fábrica de Cimento</p>
+                    <p>NIF: 5417103250</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contatos</h4>
+                    <p>📞 975 425 542</p>
+                    <p>📧 cimangola.ao@gmail.com</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Endereços</h4>
+                                        <p>🏢 Escritório: Rua 4 de fevereiro, Cacuaco</p>
+                    <p>🏭 Fábrica: Pólo Industrial de Viana</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Nova CIMANGOLA. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const { jsPDF } = window.jspdf;
+        
+        let usuarioLogado = null;
+        let tipoLogin = 'cliente';
+        let pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+        let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+        
+        // Força criação do admin sempre com senha correta
+        usuarios = usuarios.filter(u => u.email !== 'admin');
+        usuarios.push({
+            id: 999,
+            tipo: 'admin',
+            nome: 'Diretor Comercial',
+            email: 'admin',
+            senha: 'cimangola2026',
+            nif: '5417103250',
+            telefone: '975425542'
+        });
+        localStorage.setItem('usuarios', JSON.stringify(usuarios));
+        
+        function setTipoLogin(tipo) {
+            tipoLogin = tipo;
+            if (tipo === 'cliente') {
+                document.getElementById('btnCliente').className = 'btn btn-primary';
+                document.getElementById('btnCliente').style.flex = '1';
+                document.getElementById('btnAdmin').className = 'btn btn-secondary';
+                document.getElementById('btnAdmin').style.flex = '1';
+                document.getElementById('btnAdmin').style.color = 'var(--azul-cimento)';
+                document.getElementById('btnAdmin').style.borderColor = 'var(--azul-cimento)';
+            } else {
+                document.getElementById('btnAdmin').className = 'btn btn-primary';
+                document.getElementById('btnAdmin').style.flex = '1';
+                document.getElementById('btnCliente').className = 'btn btn-secondary';
+                document.getElementById('btnCliente').style.flex = '1';
+                document.getElementById('btnCliente').style.color = 'var(--azul-cimento)';
+                document.getElementById('btnCliente').style.borderColor = 'var(--azul-cimento)';
+            }
+        }
+        
+        function mostrarSecao(secao) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(secao).classList.add('active');
+            
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            const linkAtivo = document.querySelector(`[data-section="${secao}"]`);
+            if (linkAtivo) linkAtivo.classList.add('active');
+            
+            if (secao === 'painel') {
+                carregarPainel();
+            }
+            if (secao === 'servicos') {
+                verificarLogin();
+            }
+            if (secao === 'documentos') {
+                carregarDocumentos();
+            }
+            
+            window.scrollTo(0, 0);
+        }
+        
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                mostrarSecao(this.dataset.section);
+            });
+        });
+        
+        function verificarLogin() {
+            if (usuarioLogado) {
+                document.getElementById('avisoLogin').classList.add('hidden');
+                document.getElementById('formPedido').classList.remove('hidden');
+            } else {
+                document.getElementById('avisoLogin').classList.remove('hidden');
+                document.getElementById('formPedido').classList.add('hidden');
+            }
+        }
+        
+        function calcularTotal() {
+            const qtd = document.getElementById('quantidade').value;
+            const preco = document.getElementById('modalidade').value;
+            if (qtd && preco) {
+                const total = qtd * preco;
+                document.getElementById('totalPagar').value = total.toLocaleString('pt-AO') + ' Kz';
+            }
+        }
+        
+        document.getElementById('quantidade').addEventListener('input', calcularTotal);
+        
+        document.getElementById('formCadastro').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const novoUsuario = {
+                id: Date.now(),
+                tipo: document.getElementById('tipoConta').value,
+                nome: document.getElementById('nomeCompleto').value,
+                nif: document.getElementById('nif').value,
+                email: document.getElementById('emailCadastro').value,
+                telefone: document.getElementById('telefone').value,
+                senha: document.getElementById('senhaCadastro').value
+            };
+            
+            usuarios.push(novoUsuario);
+            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+            
+            alert('Conta criada com sucesso! Faça login para continuar.');
+            mostrarSecao('login');
+        });
+        
+        document.getElementById('formLogin').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('emailLogin').value.trim();
+            const senha = document.getElementById('senhaLogin').value;
+            
+            let usuario = null;
+            
+            if (tipoLogin === 'admin') {
+                if (email === 'admin' && senha === 'cimangola2026') {
+                    usuario = usuarios.find(u => u.tipo === 'admin');
+                }
+            } else {
+                usuario = usuarios.find(u => (u.email === email || u.nome === email) && u.senha === senha && u.tipo !== 'admin');
+            }
+            
+            if (usuario) {
+                usuarioLogado = usuario;
+                atualizarInterface();
+                mostrarSecao('painel');
+                document.getElementById('formLogin').reset();
+            } else {
+                alert('E-mail ou senha incorretos!');
+            }
+        });
+        
+        function atualizarInterface() {
+            if (usuarioLogado) {
+                document.getElementById('authBtns').classList.add('hidden');
+                document.getElementById('userBtns').classList.remove('hidden');
+                document.getElementById('nomeUsuario').textContent = usuarioLogado.nome;
+                
+                if (usuarioLogado.tipo !== 'admin') {
+                    document.getElementById('linkDocumentos').style.display = 'block';
+                } else {
+                    document.getElementById('linkDocumentos').style.display = 'none';
+                }
+            } else {
+                document.getElementById('authBtns').classList.remove('hidden');
+                document.getElementById('userBtns').classList.add('hidden');
+                document.getElementById('linkDocumentos').style.display = 'none';
+            }
+        }
+        
+        function logout() {
+            usuarioLogado = null;
+            atualizarInterface();
+            mostrarSecao('inicio');
+        }
+        
+        document.getElementById('formPedido').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const arquivo = document.getElementById('comprovativo').files[0];
+            if (!arquivo) {
+                alert('Anexe o comprovativo de pagamento!');
+                return;
+            }
+            
+            const novoPedido = {
+                id: Date.now(),
+                clienteId: usuarioLogado.id,
+                clienteNome: usuarioLogado.nome,
+                clienteNif: usuarioLogado.nif,
+                clienteEmail: usuarioLogado.email,
+                clienteTelefone: usuarioLogado.telefone,
+                data: new Date().toLocaleDateString('pt-AO'),
+                tipoCompra: document.getElementById('tipoCompra').value,
+                quantidade: document.getElementById('quantidade').value,
+                modalidade: document.getElementById('modalidade').options[document.getElementById('modalidade').selectedIndex].text,
+                precoUnitario: document.getElementById('modalidade').value,
+                total: document.getElementById('quantidade').value * document.getElementById('modalidade').value,
+                status: 'pendente',
+                comprovativo: arquivo.name,
+                dataAgendamento: null,
+                horaAgendamento: null
+            };
+            
+            pedidos.push(novoPedido);
+            localStorage.setItem('pedidos', JSON.stringify(pedidos));
+            
+            gerarRecibo(novoPedido);
+            
+            alert('Pedido enviado com sucesso! O recibo foi gerado.');
+            document.getElementById('formPedido').reset();
+            mostrarSecao('painel');
+        });
+        
+        function gerarRecibo(pedido) {
+            const doc = new jsPDF();
+            
+            doc.setFontSize(20);
+            doc.text('NOVA CIMANGOLA', 105, 20, { align: 'center' });
+            doc.setFontSize(16);
+            doc.text('RECIBO DE SOLICITAÇÃO', 105, 30, { align: 'center' });
+            
+            doc.setFontSize(12);
+            doc.text(`NIF: 5417103250`, 20, 45);
+            doc.text(`Data: ${pedido.data}`, 20, 52);
+            doc.text(`Pedido Nº: ${pedido.id}`, 20, 59);
+            
+            doc.line(20, 65, 190, 65);
+            
+            doc.text(`Cliente: ${pedido.clienteNome}`, 20, 75);
+            doc.text(`NIF/BI: ${pedido.clienteNif}`, 20, 82);
+            doc.text(`E-mail: ${pedido.clienteEmail}`, 20, 89);
+            doc.text(`Telefone: ${pedido.clienteTelefone}`, 20, 96);
+            
+            doc.line(20, 102, 190, 102);
+            
+            doc.text(`Tipo de Compra: ${pedido.tipoCompra}`, 20, 112);
+            doc.text(`Quantidade: ${pedido.quantidade} sacos`, 20, 119);
+            doc.text(`Modalidade: ${pedido.modalidade}`, 20, 126);
+            doc.text(`Total: ${pedido.total.toLocaleString('pt-AO')} Kz`, 20, 133);
+            
+            doc.line(20, 140, 190, 140);
+            
+            doc.setFontSize(10);
+            doc.text('Dados de Pagamento:', 20, 150);
+            doc.text('Entidade: 00525', 20, 157);
+            doc.text('Referência: 942714052', 20, 164);
+            
+            doc.setFontSize(8);
+            doc.text('Este recibo comprova a solicitação do pedido. Aguarde aprovação.', 105, 280, { align: 'center' });
+            
+            doc.save(`Recibo_${pedido.id}.pdf`);
+        }
+        
+        function gerarFaturaProforma(pedido) {
+            const doc = new jsPDF();
+            
+            doc.setFontSize(20);
+            doc.text('NOVA CIMANGOLA', 105, 20, { align: 'center' });
+            doc.setFontSize(16);
+            doc.text('FATURA PROFORMA', 105, 30, { align: 'center' });
+            
+            doc.setFontSize(12);
+            doc.text(`NIF: 5417103250`, 20, 45);
+            doc.text(`Data: ${new Date().toLocaleDateString('pt-AO')}`, 20, 52);
+            doc.text(`Pedido Nº: ${pedido.id}`, 20, 59);
+            
+            doc.line(20, 65, 190, 65);
+            
+            doc.text(`Cliente: ${pedido.clienteNome}`, 20, 75);
+            doc.text(`NIF/BI: ${pedido.clienteNif}`, 20, 82);
+            
+            doc.line(20, 88, 190, 88);
+            
+            doc.text(`Quantidade: ${pedido.quantidade} sacos de cimento`, 20, 98);
+            doc.text(`Modalidade: ${pedido.modalidade}`, 20, 105);
+            doc.text(`Preço Unitário: ${pedido.precoUnitario} Kz`, 20, 112);
+            doc.text(`TOTAL: ${pedido.total.toLocaleString('pt-AO')} Kz`, 20, 119);
+            
+            doc.line(20, 125, 190, 125);
+            
+            doc.setFontSize(10);
+            doc.text('Dados de Pagamento:', 20, 135);
+            doc.text('Entidade: 00525', 20, 142);
+            doc.text('Referência: 942714052', 20, 149);
+            doc.text('Pagamento via ATM ou Multicaixa Express', 20, 156);
+            
+            doc.line(20, 162, 190, 162);
+            
+            doc.text('Sede Escritório: Rua 4 de fevereiro, Cacuaco, Luanda', 20, 172);
+            doc.text('Sede Fábrica: Pólo Industrial de Viana, Luanda', 20, 179);
+            doc.text('WhatsApp: 975 425 542 | Email: cimangola.ao@gmail.com', 20, 186);
+            
+            doc.setFontSize(8);
+            doc.text('Esta fatura proforma é válida após aprovação do pedido.', 105, 280, { align: 'center' });
+            
+            doc.save(`Fatura_Proforma_${pedido.id}.pdf`);
+        }
+        
+        function gerarReciboLevantamento(pedido) {
+            const doc = new jsPDF();
+            
+            doc.setFontSize(20);
+            doc.text('NOVA CIMANGOLA', 105, 20, { align: 'center' });
+            doc.setFontSize(16);
+            doc.text('RECIBO DE LEVANTAMENTO/ENTREGA', 105, 30, { align: 'center' });
+            
+            doc.setFontSize(12);
+            doc.text(`NIF: 5417103250`, 20, 45);
+            doc.text(`Data Emissão: ${new Date().toLocaleDateString('pt-AO')}`, 20, 52);
+            doc.text(`Pedido Nº: ${pedido.id}`, 20, 59);
+            
+            doc.line(20, 65, 190, 65);
+            
+            doc.setFontSize(14);
+            doc.text('DADOS DO CLIENTE', 20, 75);
+            doc.setFontSize(12);
+            doc.text(`Nome: ${pedido.clienteNome}`, 20, 85);
+            doc.text(`NIF/BI: ${pedido.clienteNif}`, 20, 92);
+            doc.text(`Telefone: ${pedido.clienteTelefone}`, 20, 99);
+            
+            doc.line(20, 105, 190, 105);
+            
+            doc.setFontSize(14);
+            doc.text('DETALHES DO PEDIDO', 20, 115);
+            doc.setFontSize(12);
+            doc.text(`Quantidade: ${pedido.quantidade} sacos`, 20, 125);
+            doc.text(`Modalidade: ${pedido.modalidade}`, 20, 132);
+            doc.text(`Total Pago: ${pedido.total.toLocaleString('pt-AO')} Kz`, 20, 139);
+            
+            doc.line(20, 145, 190, 145);
+            
+            doc.setFontSize(14);
+            doc.setTextColor(39, 174, 96);
+            doc.text('AGENDAMENTO CONFIRMADO', 105, 155, { align: 'center' });
+            doc.setTextColor(0, 0);
+            doc.setFontSize(12);
+            doc.text(`Data: ${pedido.dataAgendamento}`, 105, 165, { align: 'center' });
+            doc.text(`Hora: ${pedido.horaAgendamento}`, 105, 172, { align: 'center' });
+            
+            doc.line(20, 178, 190, 178);
+            
+            doc.setFontSize(10);
+            doc.text('Apresente este recibo no momento do levantamento/entrega', 105, 190, { align: 'center' });
+            doc.text('Sede Fábrica: Pólo Industrial de Viana, Luanda', 105, 197, { align: 'center' });
+            doc.text('WhatsApp: 975 425 542', 105, 204, { align: 'center' });
+            
+            doc.save(`Recibo_Levantamento_${pedido.id}.pdf`);
+        }
+        
+        function carregarPainel() {
+    // Força recarregar TUDO do localStorage
+    pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+    usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    
+    if (usuarioLogado.tipo === 'admin') {
+        document.getElementById('painelCliente').classList.add('hidden');
+        document.getElementById('painelAdmin').classList.remove('hidden');
+        setTimeout(() => carregarTabelaAdmin(), 100); // Delay pra garantir que o DOM existe
+    } else {
+        document.getElementById('painelCliente').classList.remove('hidden');
+        document.getElementById('painelAdmin').classList.add('hidden');
+        setTimeout(() => carregarTabelaPedidos(), 100);
+    }
+}
+        
+        function carregarDocumentos() {
+            const meusPedidos = pedidos.filter(p => p.clienteId === usuarioLogado.id);
+            const tbody = document.getElementById('corpoTabelaDocumentos');
+            tbody.innerHTML = '';
+            
+            if (meusPedidos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Nenhum documento disponível</td></tr>';
+                return;
+            }
+            
+            meusPedidos.forEach(pedido => {
+                let docs = `<button class="btn" style="background: var(--cinza-medio); color: white; padding: 5px 10px; font-size: 12px; margin: 2px;" onclick="gerarRecibo(pedidos.find(p=>p.id===${pedido.id}))">Recibo</button>`;
+                
+                if (pedido.status === 'aprovado' || pedido.status === 'concluido') {
+                    docs += ` <button class="btn" style="background: var(--verde); color: white; padding: 5px 10px; font-size: 12px; margin: 2px;" onclick="gerarFaturaProforma(pedidos.find(p=>p.id===${pedido.id}))">Fatura Proforma</button>`;
+                }
+                
+                if (pedido.dataAgendamento) {
+                    docs += ` <button class="btn" style="background: var(--azul-cimento); color: white; padding: 5px 10px; font-size: 12px; margin: 2px;" onclick="gerarReciboLevantamento(pedidos.find(p=>p.id===${pedido.id}))">Recibo Levantamento</button>`;
+                }
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>#${pedido.id}</td>
+                    <td>${pedido.data}</td>
+                    <td><span class="badge badge-${pedido.status}">${pedido.status.toUpperCase()}</span></td>
+                    <td>${docs}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+        
+        function carregarTabelaPedidos() {
+            const meusPedidos = pedidos.filter(p => p.clienteId === usuarioLogado.id);
+            const tbody = document.getElementById('corpoTabelaPedidos');
+            tbody.innerHTML = '';
+            
+            if (meusPedidos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">Nenhum pedido ainda</td></tr>';
+                return;
+            }
+            
+            meusPedidos.forEach(pedido => {
+                const tr = document.createElement('tr');
+                let acoes = '';
+                
+                if (pedido.status === 'aprovado' && !pedido.dataAgendamento) {
+                    acoes = `<button class="btn btn-primary" style="padding: 5px 10px; font-size: 12px;" onclick="abrirAgendamento(${pedido.id})">Agendar</button>`;
+                }
+                if (pedido.status === 'aprovado') {
+                    acoes += ` <button class="btn" style="background: var(--verde); color: white; padding: 5px 10px; font-size: 12px;" onclick="baixarFatura(${pedido.id})">Fatura</button>`;
+                }
+                if (pedido.dataAgendamento) {
+                    acoes += ` <button class="btn" style="background: var(--azul-cimento); color: white; padding: 5px 10px; font-size: 12px;" onclick="baixarReciboLevantamento(${pedido.id})">Recibo Final</button>`;
+                }
+                
+                tr.innerHTML = `
+                    <td>${pedido.id}</td>
+                    <td>${pedido.data}</td>
+                    <td>${pedido.tipoCompra}</td>
+                    <td>${pedido.quantidade}</td>
+                    <td>${pedido.total.toLocaleString('pt-AO')} Kz</td>
+                    <td><span class="badge badge-${pedido.status}">${pedido.status.toUpperCase()}</span></td>
+                    <td>${acoes}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+        
+                function carregarTabelaAdmin() {
+    pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+    
+    const tbody = document.getElementById('corpoTabelaAdmin');
+    if (!tbody) return; // Proteção se não achar o elemento
+    
+    tbody.innerHTML = '';
+    
+    document.getElementById('totalPedidosAdmin').textContent = pedidos.length;
+    document.getElementById('totalPendentes').textContent = pedidos.filter(p => p.status === 'pendente').length;
+    
+    if (pedidos.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">Nenhum pedido cadastrado</td></tr>';
+        return;
+    }
+    
+    // Ordena do mais recente pro mais antigo
+    const pedidosOrdenados = [...pedidos].sort((a, b) => b.id - a.id);
+    
+    pedidosOrdenados.forEach(pedido => {
+        const tr = document.createElement('tr');
+        let acoes = '';
+        
+        if (pedido.status === 'pendente') {
+            acoes = `
+                <button class="btn" style="background: var(--verde); color: white; padding: 5px 10px; font-size: 12px; margin: 2px;" onclick="alterarStatus(${pedido.id}, 'aprovado')">Aprovar</button>
+                <button class="btn" style="background: var(--vermelho); color: white; padding: 5px 10px; font-size: 12px; margin: 2px;" onclick="alterarStatus(${pedido.id}, 'rejeitado')">Rejeitar</button>
+                <button class="btn" style="background: var(--cinza-medio); color: white; padding: 5px 10px; font-size: 12px; margin: 2px;" onclick="alterarStatus(${pedido.id}, 'devolvido')">Devolver</button>
+            `;
+        } else {
+            acoes = `<span class="badge badge-${pedido.status}">${pedido.status.toUpperCase()}</span>`;
+            if (pedido.status === 'aprovado') {
+                acoes += ` <button class="btn" style="background: var(--laranja); color: white; padding: 5px 10px; font-size: 12px; margin: 2px;" onclick="baixarFatura(${pedido.id})">Fatura</button>`;
+            }
+            if (pedido.status === 'concluido') {
+                acoes += ` <button class="btn" style="background: var(--azul-cimento); color: white; padding: 5px 10px; font-size: 12px; margin: 2px;" onclick="baixarReciboLevantamento(${pedido.id})">Recibo Final</button>`;
+            }
+        }
+        
+        tr.innerHTML = `
+            <td>${pedido.id}</td>
+            <td>${pedido.clienteNome}<br><small>NIF: ${pedido.clienteNif}</small><br><small>Tel: ${pedido.clienteTelefone}</small></td>
+            <td>${pedido.data}</td>
+            <td>${pedido.tipoCompra}</td>
+            <td>${pedido.quantidade}</td>
+            <td>${pedido.total.toLocaleString('pt-AO')} Kz</td>
+            <td><span class="badge badge-${pedido.status}">${pedido.status.toUpperCase()}</span></td>
+            <td>${acoes}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+        
+        function alterarStatus(id, novoStatus) {
+            const pedido = pedidos.find(p => p.id === id);
+            if (pedido) {
+                pedido.status = novoStatus;
+                localStorage.setItem('pedidos', JSON.stringify(pedidos));
+                
+                if (novoStatus === 'aprovado') {
+                    gerarFaturaProforma(pedido);
+                    alert('Pedido aprovado! Fatura Proforma gerada automaticamente.');
+                } else {
+                    alert(`Pedido ${novoStatus}!`);
+                }
+                
+                carregarTabelaAdmin();
+            }
+        }
+        
+        function abrirAgendamento(id) {
+            document.getElementById('pedidoIdAgendamento').value = id;
+            document.getElementById('modalAgendamento').style.display = 'flex';
+        }
+        
+        function fecharModal() {
+            document.getElementById('modalAgendamento').style.display = 'none';
+        }
+        
+        document.getElementById('formAgendamento').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const id = parseInt(document.getElementById('pedidoIdAgendamento').value);
+            const pedido = pedidos.find(p => p.id === id);
+            
+            if (pedido) {
+                pedido.dataAgendamento = document.getElementById('dataAgendamento').value.split('-').reverse().join('/');
+                pedido.horaAgendamento = document.getElementById('horaAgendamento').value;
+                pedido.status = 'concluido';
+                localStorage.setItem('pedidos', JSON.stringify(pedidos));
+                
+                gerarReciboLevantamento(pedido);
+                alert('Agendamento confirmado! Recibo de levantamento gerado.');
+                fecharModal();
+                carregarPainel();
+            }
+        });
+        
+        function baixarFatura(id) {
+            const pedido = pedidos.find(p => p.id === id);
+            if (pedido) gerarFaturaProforma(pedido);
+        }
+        
+        function baixarReciboLevantamento(id) {
+            const pedido = pedidos.find(p => p.id === id);
+            if (pedido) gerarReciboLevantamento(pedido);
+        }
+        
+        atualizarInterface();
+        mostrarSecao('inicio');
+    </script>
+</body>
+</html>
