@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://nova-cimangola.github.io/fabrica.cimento.ao/sitemap.xml
+
+# Bloquear áreas privadas
+Disallow: /painel
+Disallow: /documentos
+Disallow: /login
+Disallow: /criar-conta
+
+# Permitir CSS e JS
+Allow: /*.css$
+Allow: /*.js$
